@@ -1,5 +1,11 @@
-<script setup></script>
+<script setup>
+import {ref, computed} from 'vue'
+import useCounterStore from './store'
+
+const store = useCounterStore()
+const test = computed(() => store.counter)
+</script >
 
 <template>
-    <p class="text-red-500">Hello</p>
+    Hello World {{ test }}
 </template>
