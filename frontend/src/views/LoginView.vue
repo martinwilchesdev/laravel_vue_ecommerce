@@ -1,5 +1,5 @@
 <script setup>
-import GuestLayout from '../components/GuestLayout.vue'
+import GuestLayout from '../components/layouts/GuestLayout.vue'
 
 const login = () => {
     console.log('Login')
