@@ -1,10 +1,20 @@
 <script setup>
-import { HomeIcon, UsersIcon, ListBulletIcon, ChartBarIcon } from '@heroicons/vue/24/outline'
+import {
+    HomeIcon,
+    UsersIcon,
+    ListBulletIcon,
+    ChartBarIcon,
+    Bars3Icon,
+} from '@heroicons/vue/24/outline'
 import NavBarLink from './NavBarLink.vue'
 </script>
 
 <template>
     <nav class="w-[200px] bg-indigo-700 text-white py-4 px-2">
+        <!-- Bars icon menu -->
+        <Bars3Icon class="size-8 mb-8 cursor-pointer" />
+
+        <!-- Menu links -->
         <NavBarLink path="app.dashboard">
             <span>
                 <HomeIcon class="size-6" />

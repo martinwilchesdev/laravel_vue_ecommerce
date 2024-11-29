@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import AppHeader from '../AppHeader.vue'
 import Sidebar from '../Sidebar.vue'
 
 const props = defineProps({
@@ -13,12 +13,13 @@ const emit = defineEmits(['submit'])
 </script>
 
 <template>
-    <div class="flex min-h-full">
+    <div class="flex min-h-full bg-gray-100">
         <!-- Sidebar -->
         <Sidebar />
         <div class="flex-1">
-            <header class="h-8 shadow bg-white">Header</header>
-            <main>
+            <!-- Header-->
+            <AppHeader />
+            <main class="p-6">
                 <RouterView />
             </main>
         </div>
