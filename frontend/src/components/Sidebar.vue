@@ -7,12 +7,16 @@ import {
     Bars3Icon,
 } from '@heroicons/vue/24/outline'
 import NavBarLink from './NavBarLink.vue'
+
+const emit = defineEmits(['toggle-sidebar'])
 </script>
 
 <template>
     <nav class="w-[200px] bg-indigo-700 text-white py-4 px-2">
         <!-- Bars icon menu -->
-        <Bars3Icon class="size-8 mb-8 cursor-pointer" />
+        <button @click="emit('toggle-sidebar')" class="mb-8 cursor-pointer">
+            <Bars3Icon class="size-8" />
+        </button>
 
         <!-- Menu links -->
         <NavBarLink path="app.dashboard">

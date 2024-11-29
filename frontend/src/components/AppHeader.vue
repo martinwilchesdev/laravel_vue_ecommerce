@@ -15,7 +15,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                     <MenuButton class="flex items-center">
                         <img
                             src="https://randomuser.me/api/portraits/lego/7.jpg"
-                            class="rounded-full w-12"
+                            class="mr-2 rounded-full w-12"
                             alt="Profile pic"
                         />
                         <span>Emmet</span>

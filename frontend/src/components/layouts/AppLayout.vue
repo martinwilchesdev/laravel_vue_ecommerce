@@ -9,13 +9,15 @@ const props = defineProps({
     },
 })
 
-const emit = defineEmits(['submit'])
+const toggleSidebar = () => {
+    console.log('test')
+}
 </script>
 
 <template>
     <div class="flex min-h-full bg-gray-100">
         <!-- Sidebar -->
-        <Sidebar />
+        <Sidebar @toggle-sidebar="toggleSidebar" />
         <div class="flex-1">
             <!-- Header-->
             <AppHeader />
