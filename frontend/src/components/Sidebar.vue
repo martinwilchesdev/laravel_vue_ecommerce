@@ -8,14 +8,28 @@ import {
 } from '@heroicons/vue/24/outline'
 import NavBarLink from './NavBarLink.vue'
 
+const props = defineProps({
+    sideBarOpen: {
+        type: Boolean,
+        default: true,
+    },
+})
+
 const emit = defineEmits(['toggle-sidebar'])
 </script>
 
 <template>
-    <nav class="w-[200px] bg-indigo-700 text-white py-4 px-2">
+    <nav
+        class="relative w-[200px] bg-indigo-700 text-white pt-20 px-2 transition-all"
+    >
         <!-- Bars icon menu -->
-        <button @click="emit('toggle-sidebar')" class="mb-8 cursor-pointer">
-            <Bars3Icon class="size-8" />
+        <button
+            @click="emit('toggle-sidebar')"
+            class="fixed top-5 left-3 cursor-pointer"
+        >
+            <Bars3Icon
+                :class="[sideBarOpen ? 'text-white' : 'text-black', 'size-10']"
+            />
         </button>
 
         <!-- Menu links -->
