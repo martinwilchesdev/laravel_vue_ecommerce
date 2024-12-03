@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 const useUserStore = defineStore('counter', {
     state: () => ({
         user: {
-            token: 123,
+            token: null,
             data: {},
         },
     }),
