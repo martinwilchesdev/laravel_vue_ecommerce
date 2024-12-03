@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue'
-import AppHeader from '../AppHeader.vue'
+import { handleError, onMounted, onUnmounted, ref } from 'vue'
+import NavBar from '../NavBar.vue'
 import Sidebar from '../Sidebar.vue'
 
 const props = defineProps({
@@ -15,19 +15,28 @@ const sideBarOpen = ref(true)
 const toggleSidebar = () => {
     sideBarOpen.value = !sideBarOpen.value
 }
+
+const handleSidebarSize = () => {
+    sideBarOpen.value = window.outerWidth >= 768 ? true : false
+}
+
+onMounted(() => {
+    handleSidebarSize()
+    window.addEventListener('resize', handleSidebarSize)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleSidebarSize)
+})
 </script>
 
 <template>
     <div class="flex min-h-full bg-gray-100">
         <!-- Sidebar -->
-        <Sidebar
-            @toggle-sidebar="toggleSidebar"
-            :class="[sideBarOpen ? '' : '-ml-[200px]']"
-            :sideBarOpen="sideBarOpen"
-        />
+        <Sidebar @toggle-sidebar="toggleSidebar" :sideBarOpen="sideBarOpen" />
         <div class="flex-1">
             <!-- Header-->
-            <AppHeader />
+            <NavBar />
             <main class="p-6">
                 <RouterView />
             </main>

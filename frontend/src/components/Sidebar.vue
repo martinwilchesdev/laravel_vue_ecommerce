@@ -20,7 +20,10 @@ const emit = defineEmits(['toggle-sidebar'])
 
 <template>
     <nav
-        class="relative w-[200px] bg-indigo-700 text-white pt-20 px-2 transition-all"
+        :class="[
+            sideBarOpen ? '' : '-ml-[200px]',
+            'relative w-[200px] bg-indigo-700 text-white pt-20 px-2 transition-all',
+        ]"
     >
         <!-- Bars icon menu -->
         <button
@@ -45,7 +48,7 @@ const emit = defineEmits(['toggle-sidebar'])
             </span>
             <span class="text-md">Products</span>
         </NavBarLink>
-        <NavBarLink path="app.users">
+        <NavBarLink path="app.products">
             <span>
                 <UsersIcon class="size-6" />
             </span>

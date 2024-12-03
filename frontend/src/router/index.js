@@ -7,6 +7,7 @@ import AppLayout from '../components/layouts/AppLayout.vue'
 import RequestPasswordResetView from '../Views/RequestPasswordResetView.vue'
 import ResetPasswordView from '../Views/ResetPasswordView.vue'
 import DashboardView from '../Views/DashboardView.vue'
+import ProductsView from '../views/ProductsView.vue'
 import LoginView from '../Views/LoginView.vue'
 
 const routes = [
@@ -23,7 +24,7 @@ const routes = [
             {
                 path: 'products',
                 name: 'app.products',
-                component: DashboardView,
+                component: ProductsView,
             },
             {
                 path: 'users',
