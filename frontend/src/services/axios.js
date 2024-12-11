@@ -3,14 +3,15 @@ import router from '../router'
 
 import axios from 'axios'
 
+// Se crea una instancia de axios
 const axiosClient = axios.create({
-    baseURL: `${import.meta.VITE_API_BASE_URL}/api`,
+    baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`, // Se obtiene la url del archivo .env
 })
 
 // interceptors es una funcion que se ejecuta antes y despues de que las peticiones sean realizadas
-axiosClient.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${useUserStore().user.token}` // Se valida que el encabezado de la peticion contenga el token de autenticacion
-    return config
+axiosClient.interceptors.request.use((response) => {
+    response.headers.Authorization = `Bearer ${useUserStore().user.token}` // Se agrega el token a la cabecera de la peticion
+    return response
 })
 
 axiosClient.interceptors.request.use(

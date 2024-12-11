@@ -1,8 +1,35 @@
 <script setup>
+import { ref } from 'vue'
+
+import useUserStore from '../store'
+import { useRouter } from 'vue-router'
+
 import GuestLayout from '../components/layouts/GuestLayout.vue'
 
-const login = () => {
-    console.log('Login')
+const store = useUserStore()
+const router = useRouter()
+
+const loading = ref(false)
+const errorMsg = ref('')
+
+const user = {
+    email: '',
+    password: '',
+    remember: false,
+}
+
+const login = async () => {
+    loading.value = true
+
+    try {
+        await store.login(user)
+        router.push({ name: 'app.dashboard' })
+    } catch (e) {
+        console.error('LOGIN ERROR: ', e.message)
+        errorMsg.value = e.message
+    } finally {
+        loading.value = false
+    }
 }
 </script>
 
@@ -21,6 +48,7 @@ const login = () => {
                     required=""
                     placeholder="Enter email"
                     class="block w-full rounded-xs border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                    v-model="user.email"
                 />
             </div>
         </div>
@@ -49,6 +77,7 @@ const login = () => {
                     required=""
                     placeholder="Enter password"
                     class="block w-full rounded-xs border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                    v-model="user.password"
                 />
             </div>
         </div>

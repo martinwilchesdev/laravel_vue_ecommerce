@@ -5,6 +5,21 @@ import {
     UserCircleIcon,
 } from '@heroicons/vue/20/solid'
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+
+import useUserStore from '../store'
+import { useRouter } from 'vue-router'
+
+const store = useUserStore()
+const router = useRouter()
+
+const logout = async () => {
+    try {
+        await store.logout()
+        router.push({ name: 'login' })
+    } catch (e) {
+        console.error('LOGOUT ERROR ', e.message)
+    }
+}
 </script>
 
 <template>
@@ -63,6 +78,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
                                             : 'text-gray-900',
                                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                                     ]"
+                                    @click="logout"
                                 >
                                     <ArrowLeftStartOnRectangleIcon
                                         :active="active"

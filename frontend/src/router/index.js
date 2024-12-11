@@ -4,12 +4,12 @@ import { createWebHistory, createRouter } from 'vue-router'
 import AppLayout from '../components/layouts/AppLayout.vue'
 
 // Views
-import RequestPasswordResetView from '../Views/RequestPasswordResetView.vue'
-import ResetPasswordView from '../Views/ResetPasswordView.vue'
-import DashboardView from '../Views/DashboardView.vue'
+import RequestPasswordResetView from '../views/RequestPasswordResetView.vue'
+import ResetPasswordView from '../views/ResetPasswordView.vue'
+import DashboardView from '../views/DashboardView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 import ProductsView from '../views/ProductsView.vue'
-import LoginView from '../Views/LoginView.vue'
+import LoginView from '../views/LoginView.vue'
 
 // Store
 import useUserStore from '../store'
@@ -28,16 +28,16 @@ const routes = [
                 name: 'app.dashboard',
                 component: DashboardView,
                 meta: {
-                    title: 'Dashboard'
-                }
+                    title: 'Dashboard',
+                },
             },
             {
                 path: 'products',
                 name: 'app.products',
                 component: ProductsView,
                 meta: {
-                    title: 'Products'
-                }
+                    title: 'Products',
+                },
             },
             {
                 path: 'users',
@@ -57,7 +57,7 @@ const routes = [
         component: LoginView,
         meta: {
             authGuest: true,
-            title: 'Login'
+            title: 'Login',
         },
     },
     {
@@ -66,7 +66,7 @@ const routes = [
         component: RequestPasswordResetView,
         meta: {
             authGuest: true,
-            title: 'Request password reset'
+            title: 'Request password reset',
         },
     },
     {
@@ -75,7 +75,7 @@ const routes = [
         component: ResetPasswordView,
         meta: {
             authGuest: true,
-            title: 'Reset password'
+            title: 'Reset password',
         },
     },
     {
@@ -83,8 +83,8 @@ const routes = [
         name: 'notFound',
         component: NotFoundView,
         meta: {
-            title: 'Not found'
-        }
+            title: 'Not found',
+        },
     },
 ]
 
@@ -112,7 +112,5 @@ router.beforeEach((to, from, next) => {
         next() // En caso contrario se redirigira al usuario a la ruta a la que intenta acceder
     }
 })
-
-
 
 export default router
