@@ -1,5 +1,9 @@
 import { defineStore } from 'pinia'
-import { login as loginAction, logout as logoutAction } from './actions.js'
+import {
+    login as loginAction,
+    logout as logoutAction,
+    getUser as getUserAction,
+} from './actions.js'
 
 const useUserStore = defineStore('counter', {
     state: () => ({
@@ -9,11 +13,14 @@ const useUserStore = defineStore('counter', {
         },
     }),
     getters: {
-        getUser() {
-            return this.user
-        },
+        getCurrentUser() {
+            return this.user.data
+        }
     },
     actions: {
+        async getUser() {
+            await getUserAction()
+        },
         async login(user) {
             await loginAction(user)
         },

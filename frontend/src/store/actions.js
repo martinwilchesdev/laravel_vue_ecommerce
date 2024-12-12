@@ -1,6 +1,15 @@
 import axiosClient from '../services/axios'
 import { setToken, setUser } from './mutations.js'
 
+export async function getUser() {
+    const {
+        data: { data },
+    } = await axiosClient.get('/user')
+
+    setUser(data)
+    return data
+}
+
 export async function login(config) {
     const { data } = await axiosClient.post('/login', config)
 

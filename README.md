@@ -28,3 +28,13 @@ Ejecutar un Seeder especifico
 ```sh
 php artisan db:seed --class=SeederName
 ```
+
+## Resources
+
+Crear un nuevo recurso
+
+```sh
+php artisan make:resource ResourceName
+```
+
+Los recursos permiten obtener valores especificos al realizar una consulta.

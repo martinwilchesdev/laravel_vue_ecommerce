@@ -33,7 +33,7 @@ const logout = async () => {
                             class="mr-2 rounded-full w-12"
                             alt="Profile pic"
                         />
-                        <span>Emmet</span>
+                        <span>{{ store.getCurrentUser.name }}</span>
                         <ChevronDownIcon
                             class="ml-2 mt-[2px] h-5 w-5 text-gray-400 hover:text-gray-200"
                             aria-hidden="true"

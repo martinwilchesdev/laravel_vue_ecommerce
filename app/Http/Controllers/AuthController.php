@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +19,10 @@ class AuthController extends Controller
         $remember = $credentials['remember'] ?? false;
         unset($credentials['remember']);
 
+        // Se valida si las credenciales de login son invalidas
         if (!Auth::attempt($credentials, $remember)) {
             return response([
-                'message' => 'Invalid credentials'
+                'message' => 'Email or password is incorrect'
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -37,7 +39,7 @@ class AuthController extends Controller
         $token = $user->createToken('token')->plainTextToken;
 
         return response([
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => $token
         ], Response::HTTP_OK);
     }
@@ -50,5 +52,9 @@ class AuthController extends Controller
         return response([
             'message' => 'Logout OK'
         ], Response::HTTP_OK);
+    }
+
+    public function getUser(Request $request) {
+        return new UserResource($request->user());
     }
 }

@@ -22,7 +22,7 @@ const emit = defineEmits(['submit'])
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form class="space-y-6" @submit.prevent="emit('submit')" method="POST">
+            <form class="space-y-6" @submit.prevent="emit('submit')">
                 <slot></slot>
             </form>
         </div>

@@ -23,10 +23,12 @@ const login = async () => {
 
     try {
         await store.login(user)
+
+        errorMsg.value = ''
         router.push({ name: 'app.dashboard' })
     } catch (e) {
-        console.error('LOGIN ERROR: ', e.message)
-        errorMsg.value = e.message
+        errorMsg.value = e.response.data.message
+        setTimeout(() => (errorMsg.value = ''), 4000)
     } finally {
         loading.value = false
     }
@@ -35,6 +37,12 @@ const login = async () => {
 
 <template>
     <GuestLayout title="Sign in to your account" @submit="login">
+        <div
+            v-if="errorMsg"
+            class="flex items-center justify-center py-3 px-5 bg-red-500 text-white rounded transition-all"
+        >
+            {{ errorMsg }}
+        </div>
         <div>
             <label for="email" class="block text-sm/6 font-medium text-gray-900"
                 >Email address</label
@@ -87,8 +95,10 @@ const login = async () => {
                 type="submit"
                 :disabled="loading"
                 :class="[
-                    loading ? 'cursor-not-allowed bg-indigo-500' : '',
-                    'flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
+                    loading
+                        ? 'cursor-not-allowed bg-indigo-400'
+                        : 'bg-indigo-600 hover:bg-indigo-500',
+                    'flex w-full justify-center items-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
                 ]"
             >
                 <svg
