@@ -31,10 +31,8 @@ php artisan db:seed --class=SeederName
 
 ## Resources
 
-Crear un nuevo recurso
+Crear un nuevo recurso (permite transformar un recurso en un arreglo)
 
 ```sh
 php artisan make:resource ResourceName
 ```
-
-Los recursos permiten obtener valores especificos al realizar una consulta.
