@@ -13,6 +13,14 @@ Crear un modelo y su respectiva migracion
 php artisan make:model ModelName -m
 ```
 
+Crear un controlador.
+
+> Se definen las rutas api en el controlador, se crea la clase request en donde se podran añadir las reglas de validacion de las peticiones realizadas y se asocia el modelo al controlador
+
+```bash
+php artisan make:controller --api --requests --model=ModelName
+```
+
 ## Migrations
 
 Ejecutar migraciones
@@ -30,6 +38,8 @@ php artisan db:seed --class=SeederName
 ```
 
 ## Resources
+
+Los recursos son una capa entre el controlador y la respuesta actual que es retornada.
 
 Crear un nuevo recurso (permite transformar un recurso en un arreglo)
 
