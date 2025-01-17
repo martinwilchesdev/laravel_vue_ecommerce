@@ -104,9 +104,9 @@ router.beforeEach((to, from) => {
 
 router.beforeEach((to, from, next) => {
     const store = useUserStore()
-    if (to.meta.requiresAuth && !store.user.token) {
+    if (to.meta.requiresAuth && !store.state.user.token) {
         next({ name: 'login' }) // Si el usuario no esta autenticadado y la ruta requiere autenticacion, se redirigira a la vista de login
-    } else if (to.meta.authGuest && store.user.token) {
+    } else if (to.meta.authGuest && store.state.user.token) {
         next({ name: 'app.dashboard' }) // Si el usuario esta autenticado, no podra acceder a las rutas de invitado
     } else {
         next() // En caso contrario se redirigira al usuario a la ruta a la que intenta acceder

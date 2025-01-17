@@ -6,11 +6,18 @@ export function setToken(token) {
     token
         ? sessionStorage.setItem('TOKEN', token)
         : sessionStorage.removeItem('TOKEN')
-    store.user.token = token
+    store.state.user.token = token
 }
 
 export function setUser(user) {
     const store = useUserStore()
 
-    store.user.data = user
+    store.state.user.data = user
+}
+
+export function setProducts(loading = false, products = []) {
+    const store = useUserStore()
+
+    store.state.products.loading = loading
+    store.state.products.data = products
 }

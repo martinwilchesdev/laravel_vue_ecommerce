@@ -1,21 +1,20 @@
 import { defineStore } from 'pinia'
+import state from './state.js'
 import {
     login as loginAction,
     logout as logoutAction,
     getUser as getUserAction,
+    getProducts as getProductsAction
 } from './actions.js'
 
 const useUserStore = defineStore('counter', {
     state: () => ({
-        user: {
-            token: sessionStorage.getItem('TOKEN'),
-            data: {},
-        },
+        state,
     }),
     getters: {
         getCurrentUser() {
-            return this.user.data
-        }
+            return this.state.user.data
+        },
     },
     actions: {
         async getUser() {
@@ -27,6 +26,9 @@ const useUserStore = defineStore('counter', {
         async logout() {
             await logoutAction()
         },
+        async getProducts() {
+            const response = await getProductsAction()
+        }
     },
 })
 

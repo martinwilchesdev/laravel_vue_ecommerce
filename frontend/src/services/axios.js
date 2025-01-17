@@ -10,7 +10,7 @@ const axiosClient = axios.create({
 
 // interceptors es una funcion que se ejecuta antes y despues de que las peticiones sean realizadas
 axiosClient.interceptors.request.use((response) => {
-    response.headers.Authorization = `Bearer ${useUserStore().user.token}` // Se agrega el token a la cabecera de la peticion
+    response.headers.Authorization = `Bearer ${useUserStore().state.user.token}` // Se agrega el token a la cabecera de la peticion
     return response
 })
 

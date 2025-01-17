@@ -1,5 +1,5 @@
 import axiosClient from '../services/axios'
-import { setToken, setUser } from './mutations.js'
+import { setToken, setUser, setProducts } from './mutations.js'
 
 export async function getUser() {
     const {
@@ -23,5 +23,13 @@ export async function logout() {
 
     setToken(null)
     setUser({})
+    return data
+}
+
+export async function getProducts() {
+    setProducts(true)
+    const { data: products } = await axiosClient.get('products')
+
+    setProducts(false, products.data)
     return data
 }
