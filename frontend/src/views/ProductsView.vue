@@ -1,25 +1,32 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
+import { PRODUCTS_PER_PAGE } from '../constans'
+
 import Spinner from '../components/core/Spinner.vue'
 import useUserStore from '../store/index'
 
 const store = useUserStore()
 
 const search = ref('')
-const perPage = ref(10)
+const perPage = ref(PRODUCTS_PER_PAGE)
 const products = computed(() => store.state.products)
 
 onMounted(() => {
     getProducts()
 })
 
-const getProducts = async () => {
+const getProducts = async (url = null) => {
     try {
-        await store.getProducts()
-    } catch(e) {
+        await store.getProducts(url)
+    } catch (e) {
         console.log('Error: ', e)
     }
+}
+
+const getForPage = (ev, link) => {
+    if (!link.url || link.active) return
+    getProducts(link.url)
 }
 </script>
 
@@ -55,7 +62,9 @@ const getProducts = async () => {
                 />
             </div>
         </div>
-        <Spinner v-if="products.loading" />
+        <div v-if="products.loading" class="w-full m-2 flex justify-center">
+            <Spinner />
+        </div>
         <template v-else>
             <table class="table-auto w-full">
                 <thead>
@@ -71,10 +80,7 @@ const getProducts = async () => {
                     <tr v-for="product in products.data">
                         <td class="border-b p-2">{{ product.id }}</td>
                         <td class="border-b p-2">
-                            <img
-                                class="w-16"
-                                :src="product.image"
-                            />
+                            <img class="w-16" :src="product.image" />
                         </td>
                         <td
                             class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis"
@@ -86,6 +92,38 @@ const getProducts = async () => {
                     </tr>
                 </tbody>
             </table>
+            <div class="flex justify-between items-center mt-5">
+                <span>
+                    Showing {{ products.meta.from }} to
+                    {{ products.meta.to }} from {{ products.meta.total }}
+                </span>
+                <div>
+                    <nav
+                        class="isolate inline-flex -space-x-px rounded-md shadow-sm"
+                        aria-label="Pagination"
+                    >
+                        <a
+                            v-for="(link, index) in products.meta.links"
+                            :key="index"
+                            href="#"
+                            @click="getForPage($event, link)"
+                            aria-current="page"
+                            class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300"
+                            :class="[
+                                link.active
+                                    ? 'relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                                    : 'bg-white hover:bg-gray-200 focus:z-20 focus:outline-offset-0',
+                                index === 0 ? 'rounded-l-md' : '',
+                                index === products.meta.links.lenght - 1
+                                    ? 'rounded-r-md'
+                                    : '',
+                                !link.url ? 'bg-gray-100 text-gray-700 pointer-events-none select-none' : '',
+                            ]"
+                            v-html="link.label"
+                        ></a>
+                    </nav>
+                </div>
+            </div>
         </template>
     </div>
 </template>

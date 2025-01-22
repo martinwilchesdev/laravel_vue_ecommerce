@@ -26,10 +26,13 @@ export async function logout() {
     return data
 }
 
-export async function getProducts() {
+export async function getProducts(url) {
     setProducts(true)
-    const { data: products } = await axiosClient.get('products')
 
-    setProducts(false, products.data)
+    url = url || 'products'
+
+    const { data } = await axiosClient.get(url)
+
+    setProducts(false, data)
     return data
 }

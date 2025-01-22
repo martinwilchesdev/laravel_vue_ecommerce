@@ -15,9 +15,10 @@ export function setUser(user) {
     store.state.user.data = user
 }
 
-export function setProducts(loading = false, products = []) {
+export function setProducts(loading = false, response = []) {
     const store = useUserStore()
 
     store.state.products.loading = loading
-    store.state.products.data = products
+    store.state.products.data = response.data
+    store.state.products.meta = response.meta
 }
