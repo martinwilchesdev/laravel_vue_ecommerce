@@ -18,7 +18,13 @@ onMounted(() => {
 
 const getProducts = async (url = null) => {
     try {
-        await store.getProducts(url)
+
+        const queryParams = {
+            search: search.value,
+            perPage: perPage.value
+        }
+
+        await store.getProducts(url, queryParams)
     } catch (e) {
         console.log('Error: ', e)
     }
@@ -45,6 +51,7 @@ const getForPage = (ev, link) => {
                 <span class="whitespace-nowrap mr-3">Per page</span>
                 <select
                     v-model="perPage"
+                    @change="getProducts(null)"
                     class="appeareance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 >
                     <option value="5">5</option>
@@ -57,6 +64,7 @@ const getForPage = (ev, link) => {
             <div>
                 <input
                     v-model="search"
+                    @input="getProducts(null)"
                     placeholder="Type to search products"
                     class="appeareance-none relative block w-56 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 />
@@ -111,7 +119,7 @@ const getForPage = (ev, link) => {
                             class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300"
                             :class="[
                                 link.active
-                                    ? 'relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                                    ? 'relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white pointer-events-none select-none focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                                     : 'bg-white hover:bg-gray-200 focus:z-20 focus:outline-offset-0',
                                 index === 0 ? 'rounded-l-md' : '',
                                 index === products.meta.links.lenght - 1

@@ -26,8 +26,8 @@ const useUserStore = defineStore('counter', {
         async logout() {
             await logoutAction()
         },
-        async getProducts(url) {
-            await getProductsAction(url)
+        async getProducts(url, queryParams) {
+            await getProductsAction(url, queryParams)
         }
     },
 })

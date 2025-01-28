@@ -36,29 +36,31 @@ const emit = defineEmits(['toggle-sidebar'])
         </button>
 
         <!-- Menu links -->
-        <NavBarLink path="app.dashboard">
-            <span>
-                <HomeIcon class="size-6" />
-            </span>
-            <span class="text-md">Dashboard</span>
-        </NavBarLink>
-        <NavBarLink path="app.products">
-            <span>
-                <ListBulletIcon class="size-6" />
-            </span>
-            <span class="text-md">Products</span>
-        </NavBarLink>
-        <NavBarLink path="app.products">
-            <span>
-                <UsersIcon class="size-6" />
-            </span>
-            <span class="text-md">Users</span>
-        </NavBarLink>
-        <NavBarLink path="app.reports">
-            <span>
-                <ChartBarIcon class="size-6" />
-            </span>
-            <span class="text-md">Reports</span>
-        </NavBarLink>
+        <div class="fixed">
+            <NavBarLink path="app.dashboard">
+                <span>
+                    <HomeIcon class="size-6" />
+                </span>
+                <span class="text-md">Dashboard</span>
+            </NavBarLink>
+            <NavBarLink path="app.products">
+                <span>
+                    <ListBulletIcon class="size-6" />
+                </span>
+                <span class="text-md">Products</span>
+            </NavBarLink>
+            <NavBarLink path="app.products">
+                <span>
+                    <UsersIcon class="size-6" />
+                </span>
+                <span class="text-md">Users</span>
+            </NavBarLink>
+            <NavBarLink path="app.reports">
+                <span>
+                    <ChartBarIcon class="size-6" />
+                </span>
+                <span class="text-md">Reports</span>
+            </NavBarLink>
+        </div>
     </nav>
 </template>

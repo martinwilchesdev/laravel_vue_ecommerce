@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
-use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductListResource;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
@@ -15,7 +16,16 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return ProductListResource::collection(Product::query()->paginate(10));
+        $search = request('search', '');
+        $perPage = request('perPage', 10);
+        $query = Product::query();
+
+        if (!empty($search)) {
+            $query->where('title', 'like', '%' . $search . '%')
+                ->orWhere('price', 'like', '%' . $search . '%');
+        }
+
+        return ProductListResource::collection($query->paginate($perPage));
     }
 
     /**
