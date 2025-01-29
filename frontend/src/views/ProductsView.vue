@@ -1,15 +1,23 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-import { PRODUCTS_PER_PAGE } from '../constans'
+import { PRODUCTS_PER_PAGE } from '../constants'
 
+import TableHeaderCell from '../components/core/Table/TableHeaderCell.vue'
 import Spinner from '../components/core/Spinner.vue'
+
 import useUserStore from '../store/index'
 
 const store = useUserStore()
 
+// Query params
 const search = ref('')
 const perPage = ref(PRODUCTS_PER_PAGE)
+
+// Sorting params
+const sortDirection = ref('desc')
+const sortField = ref('updated_at')
+
 const products = computed(() => store.state.products)
 
 onMounted(() => {
@@ -18,13 +26,14 @@ onMounted(() => {
 
 const getProducts = async (url = null) => {
     try {
-
-        const queryParams = {
+        const params = {
             search: search.value,
-            perPage: perPage.value
+            perPage: perPage.value,
+            sortField: sortField.value,
+            sortDirection: sortDirection.value,
         }
 
-        await store.getProducts(url, queryParams)
+        await store.getProducts(url, params)
     } catch (e) {
         console.log('Error: ', e)
     }
@@ -33,6 +42,15 @@ const getProducts = async (url = null) => {
 const getForPage = (ev, link) => {
     if (!link.url || link.active) return
     getProducts(link.url)
+}
+
+const sortProducts = async (field) => {
+    if (sortField.value != field) sortDirection.value = 'asc'
+    sortField.value = field
+
+    sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
+
+    await getProducts(null)
 }
 </script>
 
@@ -77,11 +95,39 @@ const getForPage = (ev, link) => {
             <table class="table-auto w-full">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Image</th>
-                        <th>Title</th>
-                        <th>Price</th>
-                        <th>Last updated</th>
+                        <TableHeaderCell
+                            @click="sortProducts('id')"
+                            field="id"
+                            :sortField="sortField"
+                            :sortDirection="sortDirection"
+                        >
+                            ID
+                        </TableHeaderCell>
+                        <TableHeaderCell field="image"> Image </TableHeaderCell>
+                        <TableHeaderCell
+                            @click="sortProducts('title')"
+                            field="title"
+                            :sortField="sortField"
+                            :sortDirection="sortDirection"
+                        >
+                            Title
+                        </TableHeaderCell>
+                        <TableHeaderCell
+                            @click="sortProducts('price')"
+                            field="price"
+                            :sortField="sortField"
+                            :sortDirection="sortDirection"
+                        >
+                            Price
+                        </TableHeaderCell>
+                        <TableHeaderCell
+                            @click="sortProducts('updated_at')"
+                            field="updated_at"
+                            :sortField="sortField"
+                            :sortDirection="sortDirection"
+                        >
+                            Last updated at
+                        </TableHeaderCell>
                     </tr>
                 </thead>
                 <tbody>
@@ -125,7 +171,9 @@ const getForPage = (ev, link) => {
                                 index === products.meta.links.lenght - 1
                                     ? 'rounded-r-md'
                                     : '',
-                                !link.url ? 'bg-gray-100 text-gray-700 pointer-events-none select-none' : '',
+                                !link.url
+                                    ? 'bg-gray-100 text-gray-700 pointer-events-none select-none'
+                                    : '',
                             ]"
                             v-html="link.label"
                         ></a>

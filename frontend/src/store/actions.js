@@ -26,16 +26,18 @@ export async function logout() {
     return data
 }
 
-export async function getProducts(url, queryParams = {}) {
+export async function getProducts(url, params = {}) {
     setProducts(true)
 
     url = url || 'products'
 
     const { data } = await axiosClient.get(url, {
         params: {
-            perPage: queryParams.perPage,
-            search: queryParams.search
-        }
+            sortDirection: params.sortDirection,
+            sortField: params.sortField,
+            perPage: params.perPage,
+            search: params.search,
+        },
     })
 
     setProducts(false, data)
