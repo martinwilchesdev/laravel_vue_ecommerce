@@ -1,132 +1,90 @@
 <script setup>
+import { computed } from 'vue'
+import {
+    TransitionRoot,
+    TransitionChild,
+    Dialog,
+    DialogPanel,
+    DialogTitle,
+} from '@headlessui/vue'
+
+const props = defineProps({
+    modelValue: {
+        type: Boolean,
+        default: false
+    }
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const show = computed({
+    get: () => props.modelValue, // Obtener el valor de la prop
+    set: (value) => emit('update:modelValue', value) // Emitir un evento al padre (actualizar el valor de la prop recibida)
+})
+
+function closeModal() {
+    show.value = false
+}
 </script>
 
 <template>
-    <div class="flex items-center justify-between mb-3">
-        <h1 class="text-3xl font-semibold">Products</h1>
-        <button
-            class="bg-indigo-700 text-white font-bold py-2 px-4 rounded border-transparent hover:bg-indigo-800 transition-colors"
-        >
-            Add new product
-        </button>
-    </div>
-    <div class="bg-white p-4 rounded-lg-shadow">
-        <div class="flex justify-between border-b-2 pb-3">
-            <div class="flex items-center">
-                <span class="whitespace-nowrap mr-3">Per page</span>
-                <select
-                    v-model="perPage"
-                    @change="getProducts(null)"
-                    class="appeareance-none relative block w-24 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+    <TransitionRoot appear :show="show" as="template">
+        <Dialog as="div" @close="closeModal" class="relative z-10">
+            <TransitionChild
+                as="template"
+                enter="duration-300 ease-out"
+                enter-from="opacity-0"
+                enter-to="opacity-100"
+                leave="duration-200 ease-in"
+                leave-from="opacity-100"
+                leave-to="opacity-0"
+            >
+                <div class="fixed inset-0 bg-black/25" />
+            </TransitionChild>
+
+            <div class="fixed inset-0 overflow-y-auto">
+                <div
+                    class="flex min-h-full items-center justify-center p-4 text-center"
                 >
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-            </div>
-            <div>
-                <input
-                    v-model="search"
-                    @input="getProducts(null)"
-                    placeholder="Type to search products"
-                    class="appeareance-none relative block w-56 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                />
-            </div>
-        </div>
-        <div v-if="products.loading" class="w-full m-2 flex justify-center">
-            <Spinner />
-        </div>
-        <template v-else>
-            <table class="table-auto w-full">
-                <thead>
-                    <tr>
-                        <TableHeaderCell
-                            @click="sortProducts('id')"
-                            field="id"
-                            :sortField="sortField"
-                            :sortDirection="sortDirection"
-                        >
-                            ID
-                        </TableHeaderCell>
-                        <TableHeaderCell field="image"> Image </TableHeaderCell>
-                        <TableHeaderCell
-                            @click="sortProducts('title')"
-                            field="title"
-                            :sortField="sortField"
-                            :sortDirection="sortDirection"
-                        >
-                            Title
-                        </TableHeaderCell>
-                        <TableHeaderCell
-                            @click="sortProducts('price')"
-                            field="price"
-                            :sortField="sortField"
-                            :sortDirection="sortDirection"
-                        >
-                            Price
-                        </TableHeaderCell>
-                        <TableHeaderCell
-                            @click="sortProducts('updated_at')"
-                            field="updated_at"
-                            :sortField="sortField"
-                            :sortDirection="sortDirection"
-                        >
-                            Last updated at
-                        </TableHeaderCell>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="product in products.data">
-                        <td class="border-b p-2">{{ product.id }}</td>
-                        <td class="border-b p-2">
-                            <img class="w-16" :src="product.image" />
-                        </td>
-                        <td
-                            class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis"
-                        >
-                            {{ product.title }}
-                        </td>
-                        <td class="border-b p-2">{{ product.price }}</td>
-                        <td class="border-b p-2">{{ product.updated_at }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="flex justify-between items-center mt-5">
-                <span>
-                    Showing {{ products.meta.from }} to
-                    {{ products.meta.to }} from {{ products.meta.total }}
-                </span>
-                <div>
-                    <nav
-                        class="isolate inline-flex -space-x-px rounded-md shadow-sm"
-                        aria-label="Pagination"
+                    <TransitionChild
+                        as="template"
+                        enter="duration-300 ease-out"
+                        enter-from="opacity-0 scale-95"
+                        enter-to="opacity-100 scale-100"
+                        leave="duration-200 ease-in"
+                        leave-from="opacity-100 scale-100"
+                        leave-to="opacity-0 scale-95"
                     >
-                        <a
-                            v-for="(link, index) in products.meta.links"
-                            :key="index"
-                            href="#"
-                            @click="getForPage($event, link)"
-                            aria-current="page"
-                            class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300"
-                            :class="[
-                                link.active
-                                    ? 'relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white pointer-events-none select-none focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-                                    : 'bg-white hover:bg-gray-200 focus:z-20 focus:outline-offset-0',
-                                index === 0 ? 'rounded-l-md' : '',
-                                index === products.meta.links.lenght - 1
-                                    ? 'rounded-r-md'
-                                    : '',
-                                !link.url
-                                    ? 'bg-gray-100 text-gray-700 pointer-events-none select-none'
-                                    : '',
-                            ]"
-                            v-html="link.label"
-                        ></a>
-                    </nav>
+                        <DialogPanel
+                            class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+                        >
+                            <DialogTitle
+                                as="h3"
+                                class="text-lg font-medium leading-6 text-gray-900"
+                            >
+                                Payment successful
+                            </DialogTitle>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    Your payment has been successfully
+                                    submitted. We’ve sent you an email with all
+                                    of the details of your order.
+                                </p>
+                            </div>
+
+                            <div class="mt-4">
+                                <button
+                                    type="button"
+                                    class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                    @click="closeModal"
+                                >
+                                    Got it, thanks!
+                                </button>
+                            </div>
+                        </DialogPanel>
+                    </TransitionChild>
                 </div>
             </div>
-        </template>
-    </div>
+        </Dialog>
+    </TransitionRoot>
 </template>
