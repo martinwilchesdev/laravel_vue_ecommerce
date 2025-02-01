@@ -1,14 +1,24 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-// Layouts
+/**
+ * Layouts
+**/
 import AppLayout from '../components/layouts/AppLayout.vue'
 
-// Views
+/**
+ * Views
+**/
+
+/* Password management */
 import RequestPasswordResetView from '../views/RequestPasswordResetView.vue'
 import ResetPasswordView from '../views/ResetPasswordView.vue'
+
+/* Products */
+import ProductsView from '../views/Products/ProductsView.vue'
+
+/* Main views */
 import DashboardView from '../views/DashboardView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
-import ProductsView from '../views/ProductsView.vue'
 import LoginView from '../views/LoginView.vue'
 
 // Store
