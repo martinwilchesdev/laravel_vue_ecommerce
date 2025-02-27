@@ -6,9 +6,9 @@ import { PRODUCTS_PER_PAGE } from '../../constants'
 import TableHeaderCell from '../../components/core/Table/TableHeaderCell.vue'
 import Spinner from '../../components/core/Spinner.vue'
 
-import useUserStore from '../../store/index'
+import useProductStore from '../../store/product'
 
-const store = useUserStore()
+const productStore = useProductStore()
 
 // Query params
 const search = ref('')
@@ -18,7 +18,7 @@ const perPage = ref(PRODUCTS_PER_PAGE)
 const sortDirection = ref('desc')
 const sortField = ref('updated_at')
 
-const products = computed(() => store.state.products)
+const products = computed(() => productStore.state.products)
 
 onMounted(() => {
     getProducts()
@@ -33,7 +33,7 @@ const getProducts = async (url = null) => {
             sortDirection: sortDirection.value,
         }
 
-        await store.getProducts(url, params)
+        await productStore.getProducts(url, params)
     } catch (e) {
         console.log('Error: ', e)
     }

@@ -1,4 +1,4 @@
-import useUserStore from '../store'
+import useUserStore from '../user'
 
 export function setToken(token) {
     const store = useUserStore()

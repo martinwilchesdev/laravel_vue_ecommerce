@@ -1,4 +1,4 @@
-import axiosClient from '../services/axios'
+import axiosClient from '../../services/axios.js'
 import { setToken, setUser, setProducts } from './mutations.js'
 
 export async function getUser() {

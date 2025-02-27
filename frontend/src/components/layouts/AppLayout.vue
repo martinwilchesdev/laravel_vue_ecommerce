@@ -4,7 +4,7 @@ import NavBar from '../NavBar.vue'
 import Sidebar from '../Sidebar.vue'
 import Spinner from '../core/Spinner.vue'
 
-import useUserStore from '../../store'
+import useUserStore from '../../store/user'
 
 const props = defineProps({
     title: {

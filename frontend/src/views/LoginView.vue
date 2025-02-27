@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
-import useUserStore from '../store'
+import useUserStore from '../store/user'
 import { useRouter } from 'vue-router'
 
 import GuestLayout from '../components/layouts/GuestLayout.vue'

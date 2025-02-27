@@ -22,7 +22,7 @@ import NotFoundView from '../views/NotFoundView.vue'
 import LoginView from '../views/LoginView.vue'
 
 // Store
-import useUserStore from '../store'
+import useUserStore from '../store/user'
 
 const routes = [
     {

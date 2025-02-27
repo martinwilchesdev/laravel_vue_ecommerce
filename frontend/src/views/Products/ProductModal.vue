@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onUpdated, ref } from 'vue'
 import {
     TransitionRoot,
     TransitionChild,
@@ -8,22 +8,68 @@ import {
     DialogTitle,
 } from '@headlessui/vue'
 
+import Spinner from '../../components/core/Spinner.vue'
+
+import useProductStore from '../../store/product'
+
 const props = defineProps({
     modelValue: {
         type: Boolean,
-        default: false
-    }
+        default: false,
+    },
+    product: {
+        required: true,
+        type: Object,
+    },
 })
 
-const emit = defineEmits(['update:modelValue'])
+const productStore = useProductStore()
+
+const emit = defineEmits(['update:modelValue', 'close'])
+
+const loading = ref(false)
+const product = ref({
+    id: props.product.id,
+    title: props.product.title,
+    image: props.product.image,
+    price: props.product.price,
+    description: props.product.description,
+})
 
 const show = computed({
     get: () => props.modelValue, // Obtener el valor de la prop
-    set: (value) => emit('update:modelValue', value) // Emitir un evento al padre (actualizar el valor de la prop recibida)
+    set: (value) => emit('update:modelValue', value), // Emitir un evento al padre (actualizar el valor de la prop recibida)
+})
+
+onUpdated(() => {
+    product.value = {
+        id: props.product.id,
+        title: props.product.title,
+        image: props.product.image,
+        price: props.product.price,
+        description: props.product.description,
+    }
 })
 
 function closeModal() {
     show.value = false
+    emit('close')
+}
+
+function onSubmit() {
+    loading.value = true
+
+    try {
+        if (product.value.id) {
+            productStore.updateProduct(product)
+            closeModal()
+        } else {
+            productStore.createProduct(product)
+            closeModal
+        }
+    } catch (e) {
+        console.log('Error: ', e)
+    }
 }
 </script>
 
@@ -58,29 +104,78 @@ function closeModal() {
                         <DialogPanel
                             class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
                         >
-                            <DialogTitle
-                                as="h3"
-                                class="text-lg font-medium leading-6 text-gray-900"
+                            <Spinner v-if="loading" />
+                            <header
+                                class="py-3 px-4 flex justify-between items-center"
                             >
-                                Payment successful
-                            </DialogTitle>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-500">
-                                    Your payment has been successfully
-                                    submitted. We’ve sent you an email with all
-                                    of the details of your order.
-                                </p>
-                            </div>
-
-                            <div class="mt-4">
+                                <DialogTitle> </DialogTitle>
                                 <button
-                                    type="button"
-                                    class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                     @click="closeModal"
+                                    class="w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.06)]"
                                 >
-                                    Got it, thanks!
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        stroke="currentColor"
+                                        class="size-6"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M6 18 18 6M6 6l12 12"
+                                        />
+                                    </svg>
                                 </button>
-                            </div>
+                            </header>
+
+                            <form @submit.prevent="onSubmit">
+                                <div class="bg-white px-4 pt-5 pb-4">
+                                    <CustomInput
+                                        class="mb-2"
+                                        v-model="product.title"
+                                        label="Product title"
+                                    />
+                                    <CustomInput
+                                        type="file"
+                                        v-model="product.image"
+                                        label="Product image"
+                                        @change="
+                                            (file) => (product.image = file)
+                                        "
+                                    />
+                                    <CustomInput
+                                        type="textarea"
+                                        class="mb-2"
+                                        v-model="product.description"
+                                        label="Product description"
+                                    />
+                                    <CustomInput
+                                        type="number"
+                                        class="mb-2"
+                                        v-model="product.price"
+                                        label="Price"
+                                    />
+                                </div>
+                                <footer
+                                    class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
+                                >
+                                    <button
+                                        type="button"
+                                        class="inline-flex w-full justify-center rounded-md bg-indigo-700 px-3 py-2 text-sm font-semibold text-white shadow-xs transition-colors hover:bg-indigo-800 sm:ml-3 sm:w-auto"
+                                    >
+                                        Submit
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                        @click="closeModal"
+                                    >
+                                        Cancel
+                                    </button>
+                                </footer>
+                            </form>
                         </DialogPanel>
                     </TransitionChild>
                 </div>

@@ -6,7 +6,7 @@ import {
 } from '@heroicons/vue/20/solid'
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
-import useUserStore from '../store'
+import useUserStore from '../store/user'
 import { useRouter } from 'vue-router'
 
 const store = useUserStore()

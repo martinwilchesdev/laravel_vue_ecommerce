@@ -21,6 +21,6 @@ function showProductModal() {
             Add new product
         </button>
     </div>
-    <ProductModal v-model="showModal" />
+    <ProductModal v-model="showModal" :product="{}" />
     <ProductsTable />
 </template>
