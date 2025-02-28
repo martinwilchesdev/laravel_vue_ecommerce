@@ -22,7 +22,7 @@ const emit = defineEmits(['toggle-sidebar'])
     <nav
         :class="[
             sideBarOpen ? '' : '-ml-[200px]',
-            'relative w-[200px] bg-indigo-700 text-white pt-20 px-2 transition-all',
+            'fixed min-w-[200px] h-screen bg-indigo-700 text-white pt-20 px-2 transition-all z-50 sm:relative sm:h-auto',
         ]"
     >
         <!-- Bars icon menu -->

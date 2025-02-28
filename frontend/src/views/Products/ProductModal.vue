@@ -8,6 +8,7 @@ import {
     DialogTitle,
 } from '@headlessui/vue'
 
+import CustomInput from '../../components/core/CustomInput.vue'
 import Spinner from '../../components/core/Spinner.vue'
 
 import useProductStore from '../../store/product'
@@ -85,7 +86,7 @@ function onSubmit() {
                 leave-from="opacity-100"
                 leave-to="opacity-0"
             >
-                <div class="fixed inset-0 bg-black/25" />
+                <div class="fixed inset-0 bg-black bg-opacity-75" />
             </TransitionChild>
 
             <div class="fixed inset-0 overflow-y-auto">
@@ -102,13 +103,13 @@ function onSubmit() {
                         leave-to="opacity-0 scale-95"
                     >
                         <DialogPanel
-                            class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+                            class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all"
                         >
                             <Spinner v-if="loading" />
                             <header
                                 class="py-3 px-4 flex justify-between items-center"
                             >
-                                <DialogTitle> </DialogTitle>
+                                <DialogTitle> Add new product </DialogTitle>
                                 <button
                                     @click="closeModal"
                                     class="w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.06)]"
@@ -156,6 +157,7 @@ function onSubmit() {
                                         class="mb-2"
                                         v-model="product.price"
                                         label="Price"
+                                        prepend="$"
                                     />
                                 </div>
                                 <footer

@@ -118,7 +118,7 @@ const sortProducts = async (field) => {
                             :sortField="sortField"
                             :sortDirection="sortDirection"
                         >
-                            Last updated at
+                            Last updated
                         </TableHeaderCell>
                     </tr>
                 </thead>
