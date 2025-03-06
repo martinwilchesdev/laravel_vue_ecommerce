@@ -66,7 +66,7 @@ function onSubmit() {
             closeModal()
         } else {
             productStore.createProduct(product)
-            closeModal
+            closeModal()
         }
     } catch (e) {
         console.log('Error: ', e)
