@@ -15,8 +15,8 @@ const search = ref('')
 const perPage = ref(PRODUCTS_PER_PAGE)
 
 // Sorting params
-const sortDirection = ref('desc')
-const sortField = ref('updated_at')
+const sortDirection = ref('asc')
+const sortField = ref('id')
 
 const products = computed(() => productStore.state.products)
 

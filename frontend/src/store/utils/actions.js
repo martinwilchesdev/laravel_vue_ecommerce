@@ -43,3 +43,16 @@ export async function getProducts(url, params = {}) {
     setProducts(false, data)
     return data
 }
+
+export async function createProduct(product) {
+    if (product.image instanceof Image) {
+        const form = new FormData()
+        form.append('title', product.title)
+        form.append('image', product.image)
+        form.append('price', product.price)
+        form.append('description', product.description)
+        product = form
+    }
+
+    await axiosClient.post('/products' , product)
+}

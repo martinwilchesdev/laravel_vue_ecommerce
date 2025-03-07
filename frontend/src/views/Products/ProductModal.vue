@@ -62,14 +62,16 @@ function onSubmit() {
 
     try {
         if (product.value.id) {
-            productStore.updateProduct(product)
+            productStore.updateProduct(product.value)
             closeModal()
         } else {
-            productStore.createProduct(product)
+            productStore.createProduct(product.value)
             closeModal()
         }
     } catch (e) {
         console.log('Error: ', e)
+    } finally {
+        loading.value = false
     }
 }
 </script>
@@ -164,7 +166,7 @@ function onSubmit() {
                                     class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
                                 >
                                     <button
-                                        type="button"
+                                        type="submit"
                                         class="inline-flex w-full justify-center rounded-md bg-indigo-700 px-3 py-2 text-sm font-semibold text-white shadow-xs transition-colors hover:bg-indigo-800 sm:ml-3 sm:w-auto"
                                     >
                                         Submit

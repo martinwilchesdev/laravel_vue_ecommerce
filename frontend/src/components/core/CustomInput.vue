@@ -45,7 +45,7 @@ const inputClasses = computed(() => {
     return cls.join(' ')
 })
 
-const emit = defineEmits(['updated:modelValue', 'change'])
+const emit = defineEmits(['update:modelValue', 'change'])
 </script>
 
 <template>
@@ -84,7 +84,7 @@ const emit = defineEmits(['updated:modelValue', 'change'])
                     :name="name"
                     :required="required"
                     :value="props.modelValue"
-                    @input="emit('updated:modelValue', $event.target.value)"
+                    @input="emit('update:modelValue', $event.target.value)"
                     :class="inputClasses"
                     :placeholder="label"
                 />

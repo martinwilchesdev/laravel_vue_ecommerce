@@ -14,6 +14,13 @@ class Product extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = [
+        'title',
+        'image',
+        'price',
+        'description'
+    ];
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
