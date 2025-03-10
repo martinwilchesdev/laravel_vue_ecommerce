@@ -10,11 +10,11 @@ import useProductStore from '../../store/product'
 
 const productStore = useProductStore()
 
-// Query params
-const search = ref('')
+// Parametros de busqueda y muestra de productos por pagina
 const perPage = ref(PRODUCTS_PER_PAGE)
+const search = ref('')
 
-// Sorting params
+// Parametro de ordenamiento y direccion de ordenamiento de los productos
 const sortDirection = ref('asc')
 const sortField = ref('id')
 

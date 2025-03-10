@@ -23,7 +23,7 @@ const logout = async () => {
 </script>
 
 <template>
-    <header class="shadow p-4 bg-white">
+    <header class="sticky top-0 shadow p-4 bg-white z-10">
         <div class="flex justify-end">
             <Menu as="div" class="relative inline-block text-left">
                 <div>

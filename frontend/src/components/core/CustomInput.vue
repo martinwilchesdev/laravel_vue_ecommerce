@@ -73,8 +73,7 @@ const emit = defineEmits(['update:modelValue', 'change'])
                     :type="type"
                     :name="name"
                     :required="required"
-                    :value="props.modelValue"
-                    @input="emit('change', $event.target.file[0])"
+                    @input="emit('change', $event.target.files[0])"
                     :class="inputClasses"
                 />
             </template>

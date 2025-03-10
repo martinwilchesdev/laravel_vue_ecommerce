@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\URL;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\ProductListResource;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,7 +40,23 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        return new ProductResource(Product::create($request->validated()));
+        $data = $request->validated();
+        $data['created_by'] = $request->user()->id;
+        $data['updated_by'] = $request->user()->id;
+
+        /** @var \Illuminate\Http\UploadFile $image  */
+        $image = $data['image'] ?? null;
+
+        if ($image) {
+            $relativePath = $this->saveImage($image);
+            $data['image'] = URL::to(Storage::url($relativePath));
+            $data['image_mime'] = $image->getMimeType();
+            $data['image_size'] = $image->getSize();
+        }
+
+        $product = Product::create($data);
+
+        return new ProductResource($product);
     }
 
     /**
@@ -67,5 +87,25 @@ class ProductController extends Controller
         return response([
             'message' => 'product deleted successfully'
         ], Response::HTTP_NO_CONTENT);
+    }
+
+    private function saveImage(UploadedFile $image) {
+        // Se genera una ruta que inicia con `images/` seguido de un string aleatorio
+        $path = 'images/' . Str::random();
+
+        // Si la ruta no existe
+        if (!Storage::exists($path)) {
+            // En caso contrario se crea el nuevo directorio
+            Storage::makeDirectory($path, 0755, true);
+        }
+
+        // Si la imagen no puede ser guardada
+        if (!Storage::putFileAs('/public' . $path, $image, $image->getClientOriginalName())) {
+            // Se lanza una excepcion
+            throw new  \Exception("Unable to save file \"{$image->getClientOriginalName()}\"");
+        }
+
+        // Si la imagen se guarda correctamente se retorna la ruta donde esta alojada
+        return $path . '/' . $image->getClientOriginalName();
     }
 }

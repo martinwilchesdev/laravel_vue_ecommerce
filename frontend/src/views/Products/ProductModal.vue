@@ -74,6 +74,10 @@ function onSubmit() {
         loading.value = false
     }
 }
+
+function loadImage(image) {
+    product.value.image = image
+}
 </script>
 
 <template>
@@ -144,9 +148,7 @@ function onSubmit() {
                                         type="file"
                                         v-model="product.image"
                                         label="Product image"
-                                        @change="
-                                            (file) => (product.image = file)
-                                        "
+                                        @change="loadImage(file)"
                                     />
                                     <CustomInput
                                         type="textarea"

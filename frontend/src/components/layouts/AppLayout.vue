@@ -21,14 +21,18 @@ const toggleSidebar = () => {
     sideBarOpen.value = !sideBarOpen.value
 }
 
+// A partir del tamaño de la ventana se asigna el valor a sidebarOpen para ocultar o mostrar el menu lateral
 const handleSidebarSize = () => {
     sideBarOpen.value = window.outerWidth >= 768 ? true : false
 }
 
 onMounted(() => {
+    // Se obtiene el usuario autenticado y se guarda en el store
     store.getUser()
 
     handleSidebarSize()
+
+    // Se asigna la funcion que calcula el tamaño de la ventana al escuchado de eventos `resize`
     window.addEventListener('resize', handleSidebarSize)
 })
 
