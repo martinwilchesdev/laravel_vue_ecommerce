@@ -40,7 +40,10 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
+        // Se valida la imagen de acuerdo a las reglas definidas en `ProductRequest`
         $data = $request->validated();
+
+        // Se obtiene el id del usuario autenticado y se asociada a los campos `created_by` y `updated_by`
         $data['created_by'] = $request->user()->id;
         $data['updated_by'] = $request->user()->id;
 
@@ -48,9 +51,11 @@ class ProductController extends Controller
         $image = $data['image'] ?? null;
 
         if ($image) {
+            // Se guarda la imagen y se obtiene su ruta relativa
             $relativePath = $this->saveImage($image);
+
             $data['image'] = URL::to(Storage::url($relativePath));
-            $data['image_mime'] = $image->getMimeType();
+            $data['image_mime'] = $image->getClientMimeType();
             $data['image_size'] = $image->getSize();
         }
 
@@ -95,17 +100,17 @@ class ProductController extends Controller
 
         // Si la ruta no existe
         if (!Storage::exists($path)) {
-            // En caso contrario se crea el nuevo directorio
+            // Se crea el nuevo directorio en la ruta especificada
             Storage::makeDirectory($path, 0755, true);
         }
 
         // Si la imagen no puede ser guardada
-        if (!Storage::putFileAs('/public' . $path, $image, $image->getClientOriginalName())) {
+        if (!Storage::putFileAs('/public' . '/' . $path, $image, $image->getClientOriginalName())) {
             // Se lanza una excepcion
             throw new  \Exception("Unable to save file \"{$image->getClientOriginalName()}\"");
         }
 
-        // Si la imagen se guarda correctamente se retorna la ruta donde esta alojada
+        // Si la imagen se guarda correctamente se retorna la ruta relativa donde se almaceno
         return $path . '/' . $image->getClientOriginalName();
     }
 }

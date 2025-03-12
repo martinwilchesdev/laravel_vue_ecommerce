@@ -18,7 +18,11 @@ class Product extends Model
         'title',
         'image',
         'price',
-        'description'
+        'description',
+        'image_mime',
+        'image_size',
+        'created_by',
+        'updated_by',
     ];
 
     public function getSlugOptions(): SlugOptions

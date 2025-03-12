@@ -148,7 +148,9 @@ function loadImage(image) {
                                         type="file"
                                         v-model="product.image"
                                         label="Product image"
-                                        @change="loadImage(file)"
+                                        @change="(file) => (
+                                            product.image = file
+                                        )"
                                     />
                                     <CustomInput
                                         type="textarea"
