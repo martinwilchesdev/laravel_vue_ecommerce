@@ -57,26 +57,21 @@ function closeModal() {
     emit('close')
 }
 
-function onSubmit() {
+async function onSubmit() {
     loading.value = true
 
     try {
         if (product.value.id) {
-            productStore.updateProduct(product.value)
-            closeModal()
+            await productStore.updateProduct(product.value)
         } else {
-            productStore.createProduct(product.value)
-            closeModal()
+            await productStore.createProduct(product.value)
         }
     } catch (e) {
         console.log('Error: ', e)
     } finally {
         loading.value = false
+        closeModal()
     }
-}
-
-function loadImage(image) {
-    product.value.image = image
 }
 </script>
 
@@ -109,9 +104,13 @@ function loadImage(image) {
                         leave-to="opacity-0 scale-95"
                     >
                         <DialogPanel
-                            class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all"
+                            class="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all"
                         >
-                            <Spinner v-if="loading" />
+                            <Spinner
+                                v-if="loading"
+                                class="absolute left-0 top-0 bg-white right-0 bottom-0 flex items-center justify-center"
+                                text="Please wait..."
+                            />
                             <header
                                 class="py-3 px-4 flex justify-between items-center"
                             >
@@ -148,9 +147,9 @@ function loadImage(image) {
                                         type="file"
                                         v-model="product.image"
                                         label="Product image"
-                                        @change="(file) => (
-                                            product.image = file
-                                        )"
+                                        @change="
+                                            (file) => (product.image = file)
+                                        "
                                     />
                                     <CustomInput
                                         type="textarea"
