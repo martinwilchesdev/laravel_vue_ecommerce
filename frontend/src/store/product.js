@@ -3,6 +3,7 @@ import state from './utils/state.js'
 
 import { getProducts as getProductsAction } from './utils/actions.js'
 import { createProduct as createProductAction } from './utils/actions.js'
+import { deleteProduct as deleteProductAction } from './utils/actions.js'
 
 const useProductStore = defineStore('product', {
     state: () => ({
@@ -18,6 +19,9 @@ const useProductStore = defineStore('product', {
         },
         async updateProduct(product) {
             await updateProductAction(product)
+        },
+        async deleteProduct(id) {
+            await deleteProductAction(id)
         }
     },
 })

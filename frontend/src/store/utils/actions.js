@@ -74,3 +74,7 @@ export async function updateProduct(product) {
 
     await axiosClient.post(`/products/${id}`, product)
 }
+
+export async function deleteProduct(id) {
+    await axiosClient.delete(`/products/${id}`)
+}
