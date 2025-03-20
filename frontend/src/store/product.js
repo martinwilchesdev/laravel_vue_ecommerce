@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import state from './utils/state.js'
 
+import { getProduct as getProductAction } from './utils/actions.js'
 import { getProducts as getProductsAction } from './utils/actions.js'
 import { createProduct as createProductAction } from './utils/actions.js'
 import { deleteProduct as deleteProductAction } from './utils/actions.js'
@@ -22,6 +23,9 @@ const useProductStore = defineStore('product', {
         },
         async deleteProduct(id) {
             await deleteProductAction(id)
+        },
+        async getProduct(id) {
+            return await getProductAction(id)
         }
     },
 })

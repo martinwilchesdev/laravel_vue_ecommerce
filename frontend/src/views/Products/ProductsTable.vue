@@ -8,9 +8,15 @@ import TableHeaderCell from '../../components/core/Table/TableHeaderCell.vue'
 import Spinner from '../../components/core/Spinner.vue'
 
 import useProductStore from '../../store/product'
-import { PencilIcon, TrashIcon, EllipsisVerticalIcon } from '@heroicons/vue/20/solid'
+import {
+    PencilIcon,
+    TrashIcon,
+    EllipsisVerticalIcon,
+} from '@heroicons/vue/20/solid'
 
 const productStore = useProductStore()
+
+const emit = defineEmits(['clickEdit'])
 
 // Parametros de busqueda y muestra de productos por pagina
 const perPage = ref(PRODUCTS_PER_PAGE)
@@ -56,17 +62,23 @@ const sortProducts = async (field) => {
 }
 
 const deleteProduct = async (id) => {
-    productStore.state.products.loading = true
+    if (window.confirm('Are you sure to want delete the product?')) {
+        try {
+            productStore.state.products.loading = true
 
-    try {
-        await productStore.deleteProduct(id)
+            await productStore.deleteProduct(id)
 
-        await getProducts(null)
-    } catch(e) {
-        console.log('Error: ', e)
-    } finally {
-        productStore.state.products.loading = false
+            await getProducts(null)
+        } catch (e) {
+            console.log('Error: ', e)
+        } finally {
+            productStore.state.products.loading = false
+        }
     }
+}
+
+const editProduct = async (product) => {
+    emit('clickEdit', product)
 }
 </script>
 
@@ -179,7 +191,7 @@ const deleteProduct = async (id) => {
                                     leave-to-class="transform scale-95 opacity-0"
                                 >
                                     <MenuItems
-                                        class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+                                        class="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-[5]"
                                     >
                                         <div class="px-1 py-1">
                                             <MenuItem v-slot="{ active }">
@@ -190,6 +202,9 @@ const deleteProduct = async (id) => {
                                                             : 'text-gray-900',
                                                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                                                     ]"
+                                                    @click="
+                                                        editProduct(product)
+                                                    "
                                                 >
                                                     <PencilIcon
                                                         :active="active"
@@ -207,7 +222,11 @@ const deleteProduct = async (id) => {
                                                             : 'text-gray-900',
                                                         'group flex w-full items-center rounded-md px-2 py-2 text-sm',
                                                     ]"
-                                                    @click="deleteProduct(product.id)"
+                                                    @click="
+                                                        deleteProduct(
+                                                            product.id
+                                                        )
+                                                    "
                                                 >
                                                     <TrashIcon
                                                         :active="active"

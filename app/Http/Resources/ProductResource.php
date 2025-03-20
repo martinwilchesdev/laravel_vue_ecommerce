@@ -8,6 +8,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
 {
+    // Evita que los datos retornados se envuelvan en una propiedad llamada data
+    public static $wrap = false;
+
     /**
      * Transform the resource into an array.
      *

@@ -1,3 +1,4 @@
+import axios from 'axios'
 import axiosClient from '../../services/axios.js'
 import { setToken, setUser, setProducts } from './mutations.js'
 
@@ -29,7 +30,7 @@ export async function logout() {
 export async function getProducts(url, params = {}) {
     setProducts(true)
 
-    const { data } = await axiosClient.get(url ?? 'products', {
+    const { data } = await axiosClient.get(url || 'products', {
         params: {
             sortDirection: params.sortDirection,
             sortField: params.sortField,
@@ -54,7 +55,7 @@ export async function createProduct(product) {
     }
 
     // En caso contrario se envia el objeto que contiene los datos para crear un nuevo producto
-    await axiosClient.post('/products' , product)
+    await axiosClient.post('/products', product)
 }
 
 export async function updateProduct(product) {
@@ -77,4 +78,10 @@ export async function updateProduct(product) {
 
 export async function deleteProduct(id) {
     await axiosClient.delete(`/products/${id}`)
+}
+
+export async function getProduct(id) {
+    const { data } = await axiosClient.get(`/products/${id}`)
+
+    return data
 }

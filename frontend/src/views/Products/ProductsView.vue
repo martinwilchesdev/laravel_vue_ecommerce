@@ -3,6 +3,10 @@ import ProductModal from './ProductModal.vue'
 import ProductsTable from './ProductsTable.vue'
 import { ref } from 'vue'
 
+import useProductStore from '../../store/product'
+
+const productStore = useProductStore()
+
 const showModal = ref(false)
 
 const productModel = ref({
@@ -14,6 +18,12 @@ const productModel = ref({
 })
 
 function showProductModal() {
+    showModal.value = true
+}
+
+async function editProduct(product) {
+    const response = await productStore.getProduct(product.id)
+    productModel.value = response
     showModal.value = true
 }
 </script>
@@ -30,5 +40,5 @@ function showProductModal() {
         </button>
     </div>
     <ProductModal v-model="showModal" :product="productModel" />
-    <ProductsTable />
+    <ProductsTable @clickEdit="editProduct" />
 </template>
