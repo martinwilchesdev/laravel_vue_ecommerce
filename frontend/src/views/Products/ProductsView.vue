@@ -3,26 +3,26 @@ import ProductModal from './ProductModal.vue'
 import ProductsTable from './ProductsTable.vue'
 import { ref } from 'vue'
 
+import { EMPTY_PRODUCT_OBJECT } from '../../constants'
+
 import useProductStore from '../../store/product'
 
 const productStore = useProductStore()
 
 const showModal = ref(false)
+const modalTitle = ref('')
 
-const productModel = ref({
-    id: '',
-    title: '',
-    image: '',
-    price: '',
-    description: '',
-})
+const productModel = ref(EMPTY_PRODUCT_OBJECT)
 
 function showProductModal() {
+    productModel.value = EMPTY_PRODUCT_OBJECT
+    modalTitle.value = 'Add new product'
     showModal.value = true
 }
 
 async function editProduct(product) {
     const response = await productStore.getProduct(product.id)
+    modalTitle.value = 'Edit product'
     productModel.value = response
     showModal.value = true
 }
@@ -39,6 +39,10 @@ async function editProduct(product) {
             Add new product
         </button>
     </div>
-    <ProductModal v-model="showModal" :product="productModel" />
+    <ProductModal
+        v-model="showModal"
+        :product="productModel"
+        :modalTitle="modalTitle"
+    />
     <ProductsTable @clickEdit="editProduct" />
 </template>

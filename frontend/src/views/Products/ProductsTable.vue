@@ -23,7 +23,7 @@ const perPage = ref(PRODUCTS_PER_PAGE)
 const search = ref('')
 
 // Parametro de ordenamiento y direccion de ordenamiento de los productos
-const sortDirection = ref('asc')
+const sortDirection = ref('desc')
 const sortField = ref('id')
 
 const products = computed(() => productStore.state.products)
@@ -61,6 +61,10 @@ const sortProducts = async (field) => {
     await getProducts(null)
 }
 
+const editProduct = async (product) => {
+    emit('clickEdit', product)
+}
+
 const deleteProduct = async (id) => {
     if (window.confirm('Are you sure to want delete the product?')) {
         try {
@@ -75,10 +79,6 @@ const deleteProduct = async (id) => {
             productStore.state.products.loading = false
         }
     }
-}
-
-const editProduct = async (product) => {
-    emit('clickEdit', product)
 }
 </script>
 
@@ -157,7 +157,7 @@ const editProduct = async (product) => {
                     <tr v-for="product in products.data">
                         <td class="border-b p-2">{{ product.id }}</td>
                         <td class="border-b p-2">
-                            <img class="w-16" :src="product.image" />
+                            <img class="w-16" :src="product.image_url" />
                         </td>
                         <td
                             class="border-b p-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis"

@@ -4,6 +4,7 @@ import state from './utils/state.js'
 import { getProduct as getProductAction } from './utils/actions.js'
 import { getProducts as getProductsAction } from './utils/actions.js'
 import { createProduct as createProductAction } from './utils/actions.js'
+import { updateProduct as updateProductAction } from './utils/actions.js'
 import { deleteProduct as deleteProductAction } from './utils/actions.js'
 
 const useProductStore = defineStore('product', {

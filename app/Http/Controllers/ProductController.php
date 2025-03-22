@@ -23,7 +23,7 @@ class ProductController extends Controller
         $query = Product::query();
         $search = request('search', '');
         $perPage = request('perPage', 10);
-        $sortField = request('sortField', 'updated_at');
+        $sortField = request('sortField', 'id');
         $sortDirection = request('sortDirection', 'desc');
 
         $query->orderBy($sortField, $sortDirection);

@@ -18,6 +18,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    modalTitle: {
+        type: String,
+        default: 'Add new product',
+    },
     product: {
         required: true,
         type: Object,
@@ -69,6 +73,7 @@ async function onSubmit() {
     } catch (e) {
         console.log('Error: ', e)
     } finally {
+        await productStore.getProducts()
         loading.value = false
         closeModal()
     }
@@ -114,7 +119,7 @@ async function onSubmit() {
                             <header
                                 class="py-3 px-4 flex justify-between items-center"
                             >
-                                <DialogTitle> Add new product </DialogTitle>
+                                <DialogTitle> {{ modalTitle }} </DialogTitle>
                                 <button
                                     @click="closeModal"
                                     class="w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.06)]"
