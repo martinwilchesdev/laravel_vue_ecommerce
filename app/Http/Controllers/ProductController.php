@@ -77,7 +77,23 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $product->update($request->validated());
+        $data = $request->validated();
+
+        $data['updated_by'] = $request->user()->id;
+
+        /** @var \Illuminate\Http\UploadFile $image  */
+        $image = $data['image'] ?? null;
+
+        if ($image) {
+            // Se guarda la imagen y se obtiene su ruta relativa
+            $relativePath = $this->saveImage($image);
+
+            $data['image'] = URL::to(Storage::url($relativePath));
+            $data['image_mime'] = $image->getClientMimeType();
+            $data['image_size'] = $image->getSize();
+        }
+
+        $product->update($data);
 
         return new ProductResource($product);
     }
