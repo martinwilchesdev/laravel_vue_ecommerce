@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Product;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\URL;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
